@@ -1,0 +1,123 @@
+.dashboard {
+  border: 6px solid grey;
+  border-image: linear-gradient(to right, #e6e6e6, #cccccc, #e6e6e6) 1;
+  border-bottom: none;
+  height: 32vh;
+  overflow: auto;
+}
+
+.dashboard-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.dashboard-top p {
+  font-size: 20px;
+}
+
+.dashboard-top span {
+  color: lightgrey;
+  opacity: 0.75;
+  margin-left: 10px;
+  font-size: 18px;
+}
+
+.dashboard-top-middle {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 20px;
+}
+
+.dashboard-top-middle img {
+  width: 25px;
+}
+
+.dashboard.hide {
+  display: none;
+}
+
+.dashboard 
+
+
+.player {
+  margin: 0px auto 0 auto;
+  display: none;
+}
+
+.player.active {
+  display: block;
+}
+
+.player-tap-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 5fr 3fr;
+  gap: 10px;
+  padding: 8px 5px;
+  border: 6px solid grey;
+  border-image: linear-gradient(to right, #999999, #dddddd, #999999);
+  border-image-slice: 1;
+  margin: 0 10px 10px 10px;
+}
+
+.player-tap-grid h3, .player-tap-grid p {
+  margin: 0;
+}
+
+.player-tap-grid h5 {
+  margin: 5px 0 10px 0;
+}
+
+.player-tap-grid img {
+  width: 90%;
+}
+
+.player-tap-grid-right-section {
+  margin: 0 10px;
+  transition: ease-in-out 0.3s;
+  border: 3px solid white;
+  border-radius: 5px;
+  font-size: 13px
+}
+
+.player-tap-grid-right-section:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.player-tap-grid-right-section-top {
+  display: flex;
+  justify-content: center;
+  background-color: darkgray;
+  font-size: 18px;
+}
+
+.player-tap-grid-right-section-top img {
+  width: 30px;
+}
+
+.player-tap-grid-right-section h3 {
+  background-color: gray;
+  padding: 5px 10px;
+}
+
+
+
+
+.dashboard::-webkit-scrollbar {
+  width: 2px; /* Width of the scrollbar */
+}
+
+.dashboard::-webkit-scrollbar-track {
+  background: #000; /* Background color of the track */
+}
+
+.dashboard::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+}
+
+.dashboard::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the scrollbar thumb on hover */
+}
