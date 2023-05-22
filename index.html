@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="index.css">
   <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="field.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"
     integrity="sha512-cOH8ndwGgPo+K7pTvMrqYbmI8u8k6Sho3js0gOqVWTmQMlLIi6TbqGWRTpf1ga8ci9H3iPsvDLr4X7xwhC/+DQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -36,8 +37,8 @@
     </div>
 
     <div class="enemy-hp-bar">
-      <div class="enemy-name"> {{ enemy.minion.name }} </div>
-      <div class="enemy-hp-text">{{ enemy.minion.currentHealth }} HP</div>
+      <div class="enemy-name"> {{ displaying.name }} </div>
+      <div class="enemy-hp-text">{{ displaying.currentHealth }} HP</div>
       <div class="hp-remaining" ref="hpRemaining"></div>
     </div>
 
@@ -46,14 +47,28 @@
       <div class="coins">{{ coins }}</div>
     </div>
 
-    <div class="enemy-box" @click="handleClick"></div>
+    <div class="field">
+      <div class="left-field">
+        <img src="assets/heroes/garen-fielded.png" alt="" class="garen" :class="{show: heroes.garen.level > 0}">
+        <img src="assets/heroes/darius-fielded.png" alt="" class="darius" :class="{show: heroes.darius.level > 0}">
+        <div></div>
+      </div>
+      <div class="enemy-box" @click="handleClick">
+        <img :src="displaying.enemy" alt="" draggable="false">
+        <div class="sword-particles"></div>
+      </div>
+      
+      <div class="right-field">
 
-    <div>
+      </div>
+    </div>
+    
+    <div class="bottom-section">
       <div class="info-grid" :class="{ hide: activeTab !== 'closed'}">
-        <div>Click Damage: {{ player.tapDamage }}</div>
+        <div>Click Damage: {{ player.clickDamage }}</div>
         <div>Hero Damage: {{ passiveDamage }}</div>
-        <div>3</div>
-        <div>4</div>
+        <div>Total Damage: {{ player.clickDamage + passiveDamage }}</div>
+        <div>Hidden</div>
       </div>
 
       <div class="player-skill-container" :class="{ hide: activeTab !== 'closed'}">
@@ -86,7 +101,8 @@
               <h5>Lv. {{ player.level }}</h6>
                 <p>Click Damage: {{ player.clickDamage }}</p>
             </div>
-            <div @click="handlePlayerLevelUp" class="player-tap-grid-right-section">
+            <div @click="handlePlayerLevelUp" class="player-tap-grid-right-section"
+            :class="{canBuy: coins > this.player.levelUpCost}">
               <div class="player-tap-grid-right-section-top">
                 <img src="./assets/coin.png" alt="" srcset="">
                 <p>{{ player.levelUpCost }}</p>
@@ -104,7 +120,8 @@
               <h5>Lv. {{ player.level }}</h6>
                 <p>Click Damage: {{ player.clickDamage }}</p>
             </div>
-            <div @click="handlePlayerLevelUp" class="player-tap-grid-right-section">
+            <div @click="handlePlayerLevelUp" class="player-tap-grid-right-section"
+            >
               <div class="player-tap-grid-right-section-top">
                 <img src="./assets/coin.png" alt="" srcset="">
                 <p>{{ player.levelUpCost }}</p>
@@ -132,25 +149,61 @@
           </div>
 
         </div>
-        <div class="heroes">
+        <div class="heroes" :class="{ active: activeTab === 'heroes'}">
+          <div class="player-tap-grid">
+            <div>
+              <img src="./assets/heroes/garen.png" alt="" class="src">
+            </div>
+            <div class="player-tap-grid-middle-section">
+              <h3>Garen - The might of Demacia</h3>
+              <h5>Lv. {{ heroes.garen.level }}</h6>
+                <p>Damage: {{ heroes.garen.damage }}</p>
+            </div>
+            <div @click="handleHeroLevelUp('garen')" class="player-tap-grid-right-section"
+            :class="{canBuy: coins > this.heroes.garen.levelUpCost}">
+              <div class="player-tap-grid-right-section-top">
+                <img src="./assets/coin.png" alt="" srcset="">
+                <p>{{ heroes.garen.levelUpCost }}</p>
+              </div>
+              <h3>Level Up <br /> + {{ heroes.garen.damageIncreaseOnLevelUp }} Damage</h3>
+            </div>
+          </div>
 
+          <div class="player-tap-grid">
+            <div>
+              <img src="./assets/heroes/darius.png" alt="" class="src">
+            </div>
+            <div class="player-tap-grid-middle-section">
+              <h3>darius - The hand of Noxus</h3>
+              <h5>Lv. {{ heroes.darius.level }}</h6>
+                <p>Damage: {{ heroes.darius.damage }}</p>
+            </div>
+            <div @click="handleHeroLevelUp('darius')" class="player-tap-grid-right-section"
+            :class="{canBuy: coins > this.heroes.darius.levelUpCost}">
+              <div class="player-tap-grid-right-section-top">
+                <img src="./assets/coin.png" alt="" srcset="">
+                <p>{{ heroes.darius.levelUpCost }}</p>
+              </div>
+              <h3>Level Up <br /> + {{ heroes.darius.damageIncreaseOnLevelUp }} Damage</h3>
+            </div>
+          </div>
         </div>
       </div>
+
+      <section class="footer-tabs">
+        <div @click="handleFooterTabClick('player')" :class="{ active: activeTab === 'player'}"
+          style="background-color: red">Player</div>
+        <div @click="handleFooterTabClick('heroes')" :class="{ active: activeTab === 'heroes'}"
+          style="background-color: blue">Heroes</div>
+        <div @click="handleFooterTabClick('mythics')" :class="{ active: activeTab === 'mythics'}"
+          style="background-color: green">Mythics</div>
+        <div @click="handleFooterTabClick('shop')" :class="{ active: activeTab === 'shop'}"
+          style="background-color: orange">Shop</div>
+      </section>
     </div>
-
-    <section class="footer-tabs">
-      <div @click="handleFooterTabClick('player')" :class="{ active: activeTab === 'player'}"
-        style="background-color: red">Player</div>
-      <div @click="handleFooterTabClick('heroes')" :class="{ active: activeTab === 'heroes'}"
-        style="background-color: blue">Heroes</div>
-      <div @click="handleFooterTabClick('artifacts')" :class="{ active: activeTab === 'artifacts'}"
-        style="background-color: green">Artifacts</div>
-      <div @click="handleFooterTabClick('shop')" :class="{ active: activeTab === 'shop'}"
-        style="background-color: orange">Shop</div>
-    </section>
-  </div>
-
-  <script src="app.js"></script>
+    <script src="app.js"></script>
+    
+    
 </body>
 
 </html>

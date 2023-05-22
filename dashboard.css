@@ -1,3 +1,7 @@
+.bottom-section {
+  margin-top: 150px;
+}
+
 .dashboard {
   border: 6px solid grey;
   border-image: linear-gradient(to right, #e6e6e6, #cccccc, #e6e6e6) 1;
@@ -39,9 +43,6 @@
   display: none;
 }
 
-.dashboard 
-
-
 .player {
   margin: 0px auto 0 auto;
   display: none;
@@ -72,6 +73,7 @@
 
 .player-tap-grid img {
   width: 90%;
+  border-radius: 5px;
 }
 
 .player-tap-grid-right-section {
@@ -79,29 +81,49 @@
   transition: ease-in-out 0.3s;
   border: 3px solid white;
   border-radius: 5px;
-  font-size: 13px
+  font-size: 13px;
+  background-color: gray;
 }
 
 .player-tap-grid-right-section:hover {
-  opacity: 0.7;
+  opacity: 0.8;
   cursor: pointer;
 }
 
 .player-tap-grid-right-section-top {
   display: flex;
   justify-content: center;
-  background-color: darkgray;
   font-size: 18px;
 }
 
 .player-tap-grid-right-section-top img {
-  width: 30px;
+  width: 25px;
+  margin-right: 3px;
 }
 
 .player-tap-grid-right-section h3 {
-  background-color: gray;
+  background-color: darkgray;
   padding: 5px 10px;
 }
+
+.heroes {
+  display: none;
+}
+
+.heroes.active {
+  display: block;
+}
+
+.player-tap-grid-right-section.canBuy {
+  background-color: rgb(255, 145, 0);
+}
+
+.player-tap-grid-right-section.canBuy h3{
+  background-color: rgb(255, 94, 0);
+}
+
+
+
 
 
 

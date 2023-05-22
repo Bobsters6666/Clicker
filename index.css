@@ -43,17 +43,23 @@ body {
 }
 
 .current-stage {
-  padding: 15px 28px;
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
   background-color: #ccc;
   border-radius: 50%;
-  font-size: 25px;
+  font-size: 22px;
 }
 
 .previous-stage, .next-stage{
   font-size: 19px;
   background-color: #bbb;
   border-radius: 50%;
-  padding: 10px 17px;
+  width: 45px;
+  height: 45px;
+  display: grid;
+  place-items: center;
 }
 
 .enemy-counter {
@@ -114,26 +120,6 @@ body {
   font-size: 30px;
 }
 
-.enemy-box {
-  width: 300px; 
-  padding: 150px 0;
-  text-align: center;
-  background-image: url('./assets/coin.png');
-  background-position: center;
-  background-size: cover;
-  color: white;
-  margin: 100px auto 150px auto;
-  transition: opacity 0.3s ease-in-out;
-}
-
-.enemy-box:hover {
-  cursor: pointer;
-  opacity: 0.8;
-}
-
-.enemy-box:active {
-  transform: scale(1.03);
-}
 
 .info-grid {
   display: grid;

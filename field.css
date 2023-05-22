@@ -1,0 +1,68 @@
+.field {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: end;
+  margin: 0 20px;
+}
+
+.left-field {
+  display: flex
+}
+
+.left-field img {
+  height: 100px;
+}
+
+.garen, .darius {
+  display: none;
+}
+
+.garen.show, .darius.show {
+  display: block;
+}
+
+.enemy-box {
+  margin: 100px auto 0px auto;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.enemy-box img {
+  height: 260px;
+}
+
+.enemy-box img:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.enemy-box img:active {
+  transform: scale(1.03);
+}
+
+.sword-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.sword-particles .particle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  opacity: 0;
+  animation: swordSlice 0.5s linear forwards;
+}
+
+@keyframes swordSlice {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2);
+  }
+}
