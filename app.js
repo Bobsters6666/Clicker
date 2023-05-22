@@ -1,8 +1,7 @@
 const app = Vue.createApp({
   data() {
     return {
-      coins: 1500,
-      // coins: parseInt(localStorage.getItem('coins')) || 1,
+      coins: parseInt(localStorage.getItem('coins')) || 15,
 
       player: {
         clickDamage: 1,
@@ -54,7 +53,7 @@ const app = Vue.createApp({
       },
 
       isBoss: false,
-      activeTab : 'heroes',
+      activeTab : 'closed',
       passiveDamage: 0,
       stage: 1,
       yesSound: true,
@@ -66,8 +65,9 @@ const app = Vue.createApp({
       const particle = document.createElement('div');
       particle.className = 'particle';
       particle.style.top = event.pageY + 'px';
-      particle.style.left = event.pageX + 'px';
+      particle.style.left = (event.pageX - document.body.getBoundingClientRect().left) + 'px';
       particlesContainer.appendChild(particle);
+      console.log(event);
 
       setTimeout(() => {
         particlesContainer.removeChild(particle);
