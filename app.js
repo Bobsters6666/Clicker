@@ -13,14 +13,14 @@ const app = Vue.createApp({
 
       enemy: {
         boss: {
-          types: ["/assets/enemies/mountain-drake.png"],
+          types: ["assets/enemies/mountain-drake.png"],
           totalHealth: 100,
           enemyHealth: 100,
           name: 'Boss'
         },
 
         minion: {
-          types: ["/assets/enemies/gromp.png", "/assets/enemies/krug.png"],
+          types: ["assets/enemies/gromp.png", "assets/enemies/krug.png"],
           currentTypeIndex: 0,
           total: 10,
           current: 1,
@@ -47,7 +47,7 @@ const app = Vue.createApp({
       },
 
       displaying: {
-        enemy: "/assets/enemies/gromp.png",
+        enemy: "assets/enemies/gromp.png",
         name: '',
         currentHealth: 0,
         totalHealth: 0,
@@ -74,7 +74,7 @@ const app = Vue.createApp({
       }, 500);
 
       this.displaying.currentHealth -= this.player.clickDamage;
-      const audio = new Audio('/assets/audio/slash.wav')
+      const audio = new Audio('assets/audio/slash.wav')
 
       if (this.yesSound) { audio.play() };
     },
