@@ -31,15 +31,20 @@
       </div>
     </section>
 
-    <div class="enemy-counter">
+    <div class="enemy-counter" :class="{hide: isTrainingGround}">
       <img src="./assets/stage_demon.png" alt="" class="src">
       <div>{{ enemy.minion.current }} / {{ enemy.minion.total }}</div>
     </div>
+
+    <button class="fight-boss-button" :class="{show: isTrainingGround}"
+    @click="handleFightBossButtonClicked">Fight Boss</button>
 
     <div class="enemy-hp-bar">
       <div class="enemy-name"> {{ displaying.name }} </div>
       <div class="enemy-hp-text">{{ displaying.currentHealth }} HP</div>
       <div class="hp-remaining" ref="hpRemaining"></div>
+      <div class="boss-timer" ref="bossTimer"
+      :class="{show: isBoss}"></div>
     </div>
 
     <div class="coins-container">
@@ -68,12 +73,12 @@
         <div>Click Damage: {{ player.clickDamage }}</div>
         <div>Hero Damage: {{ passiveDamage }}</div>
         <div>Total Damage: {{ player.clickDamage + passiveDamage }}</div>
-        <div>Hidden</div>
+        <div>Spell Damage: 0</div>
       </div>
 
       <div class="player-skill-container" :class="{ hide: activeTab !== 'closed'}">
-        <span class="material-icons player-skill">lock</span>
-        <span class="material-icons player-skill">lock</span>
+        <span class="material-icons player-skill judgement">lock</span>
+        <span class="material-icons player-skill gullotine">lock</span>
         <span class="material-icons player-skill">lock</span>
         <span class="material-icons player-skill">lock</span>
         <span class="material-icons player-skill">lock</span>
@@ -94,10 +99,10 @@
         <div class="player" :class="{ active: activeTab === 'player'}">
           <div class="player-tap-grid">
             <div>
-              <img src="./assets/stage_demon.png" alt="" class="src">
+              <img src="./assets/swordmaster.png" alt="" class="src">
             </div>
             <div class="player-tap-grid-middle-section">
-              <h3>Demon Master</h3>
+              <h3>Sword Master</h3>
               <h5>Lv. {{ player.level }}</h6>
                 <p>Click Damage: {{ player.clickDamage }}</p>
             </div>
@@ -113,38 +118,38 @@
 
           <div class="player-tap-grid">
             <div>
-              <img src="./assets/sword.png" alt="" class="src">
+              <img src="./assets/spells/judgement.png" alt="" class="src">
             </div>
             <div class="player-tap-grid-middle-section">
-              <h3>Decisive Strike</h3>
-              <h5>Lv. {{ player.level }}</h6>
-                <p>Click Damage: {{ player.clickDamage }}</p>
+              <h3>Judgement</h3>
+              <h5>Lv. {{ skills.judgement.level }}</h6>
+                <p>Spell Damage: {{ skills.judgement.damage }}</p>
             </div>
-            <div @click="handlePlayerLevelUp" class="player-tap-grid-right-section"
+            <div @click="handleSkillLevelUp" class="player-tap-grid-right-section"
             >
               <div class="player-tap-grid-right-section-top">
                 <img src="./assets/coin.png" alt="" srcset="">
-                <p>{{ player.levelUpCost }}</p>
+                <p>{{ skills.judgement.levelUpCost }}</p>
               </div>
-              <h3>Level Up <br /> + {{ player.clickDamageIncreaseOnLevelUp }} Click Damage</h3>
+              <h3>Level Up <br /> + {{ skills.judgement.damageIncreaseOnLevelUp }} Spell Damage</h3>
             </div>
           </div>
 
           <div class="player-tap-grid">
             <div>
-              <img src="./assets/stage_demon.png" alt="" class="src">
+              <img src="./assets/spells/gullotine.png" alt="" class="src">
             </div>
             <div class="player-tap-grid-middle-section">
-              <h3>Demon Master</h3>
-              <h5>Lv. {{ player.level }}</h6>
-                <p>Click Damage: {{ player.clickDamage }}</p>
+              <h3>Gullotine</h3>
+              <h5>Lv. {{ skills.gullotine.level }}</h6>
+                <p>Spell Damage: {{ skills.gullotine.damage }}</p>
             </div>
-            <div @click="handlePlayerLevelUp" class="player-tap-grid-right-section">
+            <div @click="handleSkillLevelUp" class="player-tap-grid-right-section">
               <div class="player-tap-grid-right-section-top">
                 <img src="./assets/coin.png" alt="" srcset="">
-                <p>{{ player.levelUpCost }}</p>
+                <p>{{ skills.gullotine.levelUpCost }}</p>
               </div>
-              <h3>Level Up <br /> + {{ player.clickDamageIncreaseOnLevelUp }} Click Damage</h3>
+              <h3>Level Up <br /> + {{ skills.gullotine.damageIncreaseOnLevelUp }} Spell Damage</h3>
             </div>
           </div>
 

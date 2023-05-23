@@ -64,13 +64,41 @@ body {
 
 .enemy-counter {
   position: absolute;
-  top: 20px;
+  top: 30px;
   right: 30px;
   text-align: center;
 }
 
+.enemy-counter.hide {
+  display: none;
+}
+
 .enemy-counter img {
   width: 80px;
+}
+
+.fight-boss-button {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  position: absolute;
+  top: 100px;
+  right: 10px;
+  text-align: center;
+  padding: 10px 10px;
+  border-radius: 10px;
+  background-color: darkorange;
+  border-bottom:rgb(250, 77, 25) solid 5px ;
+  display: none
+}
+
+.fight-boss-button:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.fight-boss-button.show {
+  display: block;
 }
 
 .enemy-hp-bar {
@@ -92,8 +120,6 @@ body {
 }
 
 .hp-remaining {
-  display: flex;
-  justify-content: center;
   background: linear-gradient(to right, rgb(250, 77, 25) 96%, #e7cb2c 60%);
   border: 4px solid darkred;
   border-top-right-radius: 20px;
@@ -103,6 +129,22 @@ body {
   height: 24px;
   top: 0;
   left: 0;
+}
+
+.boss-timer {
+  position: absolute;
+  top: 35px;
+  left: 5px;
+  width: 100%;
+  height: 5px;
+  background-color: orange;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 10px;
+  display: none;
+}
+
+.boss-timer.show {
+  display: block;
 }
 
 .coins-container {
@@ -147,8 +189,23 @@ body {
 
 .player-skill {
   background-color: darkgrey;
-  padding: 17px 18px;
+  padding: 27px 28px;
   border-radius: 50%;
+}
+
+
+.judgement {
+  background: url('assets/spells/judgement.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.gullotine {
+  background: url('assets/spells/gullotine.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .player-skill-container span {

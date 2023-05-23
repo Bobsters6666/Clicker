@@ -15,7 +15,9 @@ const app = Vue.createApp({
           types: ["assets/enemies/mountain-drake.png"],
           totalHealth: 100,
           enemyHealth: 100,
-          name: 'Boss'
+          name: 'Boss',
+          totalTime: 30,
+          currentTime: 30,
         },
 
         minion: {
@@ -23,8 +25,8 @@ const app = Vue.createApp({
           currentTypeIndex: 0,
           total: 10,
           current: 1,
-          totalHealth: 20,
-          enemyHealth: 20,
+          totalHealth: 12,
+          enemyHealth: 12,
           name: 'Minion'
         }
       },
@@ -45,6 +47,24 @@ const app = Vue.createApp({
         }
       },
 
+      skills: {
+        judgement: {
+          level: 0,
+          damage: 0,
+          levelUpCost: 900,
+          damageIncreaseOnLevelUp: 4560,
+          cooldown: 900
+        },
+
+        gullotine: {
+          level: 0,
+          damage: 0,
+          levelUpCost: 63000,
+          damageIncreaseOnLevelUp: 120980,
+          cooldown: 1200
+        }
+      },
+
       displaying: {
         enemy: "assets/enemies/gromp.png",
         name: '',
@@ -53,6 +73,7 @@ const app = Vue.createApp({
       },
 
       isBoss: false,
+      isTrainingGround: false,
       activeTab : 'closed',
       passiveDamage: 0,
       stage: 1,
@@ -67,7 +88,6 @@ const app = Vue.createApp({
       particle.style.top = event.pageY + 'px';
       particle.style.left = (event.pageX - document.body.getBoundingClientRect().left) + 'px';
       particlesContainer.appendChild(particle);
-      console.log(event);
 
       setTimeout(() => {
         particlesContainer.removeChild(particle);
@@ -88,13 +108,26 @@ const app = Vue.createApp({
           minion.currentTypeIndex = Math.floor(Math.random() * minion.types.length)
 
           this.displaying.enemy = minion.types[minion.currentTypeIndex]
-  
           this.displaying.currentHealth = this.displaying.totalHealth
-          minion.current++;
           this.coins += Math.floor(4 + this.stage ** 2.3)
           localStorage.setItem('coins', this.coins.toString());
+
+          if (!this.isTrainingGround) {
+            minion.current++;
+          }
         }
       }
+    },
+
+    showMinion () {
+      this.isBoss = false
+      const displaying = this.displaying
+      const minion = this.enemy.minion
+
+      displaying.enemy = minion.types[0]
+      displaying.name = minion.name
+      displaying.currentHealth = Math.floor(minion.enemyHealth * 2.1 ** this.stage)
+      displaying.totalHealth = displaying.currentHealth
     },
 
     showBoss() {
@@ -104,8 +137,8 @@ const app = Vue.createApp({
 
       displaying.enemy = boss.types[0]
       displaying.name = boss.name
-      displaying.currentHealth = Math.ceil(boss.enemyHealth * 2.6**this.stage)
-      displaying.totalHealth = Math.ceil(boss.enemyHealth * 2.6**this.stage)
+      displaying.currentHealth = Math.ceil(boss.enemyHealth * 2.2**this.stage)
+      displaying.totalHealth = Math.ceil(boss.enemyHealth * 2.2**this.stage)
     },
 
     onBossDeath() {
@@ -114,12 +147,13 @@ const app = Vue.createApp({
         const displaying = this.displaying
     
         this.stage++
+        this.coins += Math.floor(30 + this.stage ** 4.7)
     
         minion.current = 1
-        displaying.enemy = minion.types[0]
-        displaying.name = minion.name
-        displaying.currentHealth = Math.floor(minion.enemyHealth * 2.3 ** this.stage)
-        displaying.totalHealth = displaying.currentHealth
+        
+        this.showMinion()
+
+        this.enemy.boss.currentTime = this.enemy.boss.totalTime
         this.isBoss = false
       }
     },
@@ -144,22 +178,32 @@ const app = Vue.createApp({
         if (h == heroKey && this.coins > hero.levelUpCost) {
           hero.level ++
           this.coins -= hero.levelUpCost
-          hero.levelUpCost = Math.ceil(hero.levelUpCost**1.003);
+          hero.levelUpCost = Math.ceil(hero.levelUpCost**1.015);
           hero.damage += hero.damageIncreaseOnLevelUp 
-          hero.damageIncreaseOnLevelUp = Math.floor(hero.damageIncreaseOnLevelUp**1.003)
+          hero.damageIncreaseOnLevelUp = Math.floor(hero.damageIncreaseOnLevelUp**1.027)
         }
       });
+    },
+
+    handleTrainingGround() {
+      //when minions is 10/10 isBoss turns true for some reason. 
+      this.enemy.minion.current -= 1
+      this.isTrainingGround = true
+      this.enemy.boss.currentTime = this.enemy.boss.totalTime
+      this.showMinion()
+    },
+
+    handleFightBossButtonClicked () {
+      this.enemy.minion.current += 1
+      this.isTrainingGround = false
+      this.showBoss()
     },
 
     handleNewSkillPurhcase() {
       return
     },
 
-    handleSkillUpdrade() {
-      return
-    },
-
-    handleNewStage() {
+    handleSkillLevelUp() {
       return
     },
 
@@ -184,10 +228,8 @@ const app = Vue.createApp({
       gsap.to(".hp-remaining", {
         width: `${(newValue / this.displaying.totalHealth) * 100}%`,
         duration: 0.3,
-        ease: "power2.out",
+        ease: "ease.inOut",
       });
-
-      
 
       if (!this.isBoss) {
         this.onEnemyDeath()
@@ -195,6 +237,34 @@ const app = Vue.createApp({
         this.onBossDeath()
       }
     },
+
+    'enemy.boss.currentTime'(newValue) {
+      gsap.to(".boss-timer", {
+        width: `${(newValue / this.enemy.boss.totalTime) * 100}% `,
+        duration: 0.1,
+        ease: "ease.inOut"
+      }) 
+    },
+
+    'isBoss'() {
+      if (this.isBoss) {
+        // Clear the previous interval
+        clearInterval(this.bossInterval);
+        
+        // Create a new interval for the boss countdown
+        this.bossInterval = setInterval(() => {
+          if (this.enemy.boss.currentTime <= 0) {
+            this.handleTrainingGround();
+          } else {
+            this.enemy.boss.currentTime -= 0.1;
+          }
+        }, 100);
+      } else {
+        // Clear the interval when isBoss becomes false
+        clearInterval(this.bossInterval);
+      }
+    },
+
 
     totalHeroesDamage(newValue) {
       this.passiveDamage = newValue
@@ -204,11 +274,10 @@ const app = Vue.createApp({
   mounted() {
     setInterval(() => {
       this.displaying.currentHealth -= this.passiveDamage;
-    }, 500),
+    }, 500);
 
-    this.displaying.currentHealth = this.enemy.minion.enemyHealth
-    this.displaying.totalHealth = this.enemy.minion.totalHealth
-    this.displaying.name = this.enemy.minion.name
+
+    this.showMinion()
   },
 });
 
